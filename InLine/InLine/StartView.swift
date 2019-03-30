@@ -10,7 +10,8 @@ import UIKit
 
 class StartView: UIViewController {
 
-    let emptyString = "" // Do nothing
+    let YourQueuePosition = Double()
+    let currentQueuePosition = Double()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,9 @@ class StartView: UIViewController {
         
         if (segue.identifier == "goToMainUI") {
             
-            let dest = segue.destination as! UINavigationController // viewTwo is your destination ViewController
+            let dest = segue.destination as! IntroViewController // viewTwo is your destination ViewController
+            dest.YourQueuePosition = YourQueuePosition
+            dest.currentQueuePosition = currentQueuePosition
             
             print("Segue Performed")
             

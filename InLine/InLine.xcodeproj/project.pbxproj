@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		249BBFF02250035600DAB3D6 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249BBFEF2250035600DAB3D6 /* IntroViewController.swift */; };
 		24B3FCF8224FBAFB00AB741E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B3FCF7224FBAFB00AB741E /* AppDelegate.swift */; };
 		24B3FCFA224FBAFB00AB741E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B3FCF9224FBAFB00AB741E /* ViewController.swift */; };
 		24B3FCFD224FBAFB00AB741E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24B3FCFB224FBAFB00AB741E /* Main.storyboard */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		249BBFEF2250035600DAB3D6 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		24B3FCF4224FBAFB00AB741E /* InLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24B3FCF7224FBAFB00AB741E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		24B3FCF9224FBAFB00AB741E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				24B3FCF7224FBAFB00AB741E /* AppDelegate.swift */,
 				24B3FCF9224FBAFB00AB741E /* ViewController.swift */,
 				24B3FD32224FCB0200AB741E /* StartView.swift */,
+				249BBFEF2250035600DAB3D6 /* IntroViewController.swift */,
 				24B3FCFB224FBAFB00AB741E /* Main.storyboard */,
 				24B3FCFE224FBAFE00AB741E /* Assets.xcassets */,
 				24B3FD00224FBAFE00AB741E /* LaunchScreen.storyboard */,
@@ -296,6 +299,7 @@
 				24B3FD33224FCB0200AB741E /* StartView.swift in Sources */,
 				24B3FCFA224FBAFB00AB741E /* ViewController.swift in Sources */,
 				24B3FCF8224FBAFB00AB741E /* AppDelegate.swift in Sources */,
+				249BBFF02250035600DAB3D6 /* IntroViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
