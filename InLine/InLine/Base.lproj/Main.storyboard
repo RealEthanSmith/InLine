@@ -47,7 +47,7 @@
         <!--View Controller-->
         <scene sceneID="l2L-2S-YEL">
             <objects>
-                <viewController id="Klr-xO-Tpm" sceneMemberID="viewController">
+                <viewController id="Klr-xO-Tpm" customClass="ViewController" customModule="InLine" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fJo-MN-bCS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -55,7 +55,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MapBox" translatesAutoresizingMaskIntoConstraints="NO" id="MXr-yb-f7n">
                                 <rect key="frame" x="31" y="348" width="352" height="375"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="157" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="95" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vGe-Qt-8Nj">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="157" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="95" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vGe-Qt-8Nj">
                                 <rect key="frame" x="77" y="116" width="260" height="179"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="150"/>
                                 <color key="textColor" red="0.34509803921568627" green="0.58039215686274503" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -103,6 +103,10 @@
                         <viewLayoutGuide key="safeArea" id="B0e-98-4A6"/>
                     </view>
                     <navigationItem key="navigationItem" id="10q-7j-UkB"/>
+                    <connections>
+                        <outlet property="queueNumber" destination="vGe-Qt-8Nj" id="fgH-0H-VC6"/>
+                        <outlet property="timeRemaining" destination="qkM-Yu-5qu" id="Y6m-Gg-6HF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Reg-cs-dvx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
