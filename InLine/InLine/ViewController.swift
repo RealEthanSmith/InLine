@@ -15,7 +15,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
     var YourQueuePosition = Double()
     var currentQueuePosition = Double()
     let locationManager = CLLocationManager()
-
+    var timer = 1
+    var timeToDoIt = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +40,39 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
 //        
         findQueueTime()
         timeRemaining.text = "\(hours) hours and \(minuets) minutes"
+        
+        let timeer = hours * 3600
+        
+//        Timer.scheduledTimer(timeInterval: timeer, target: self, selector: #selector(timeToMoveOn), userInfo: nil, repeats: false)
+        runTimer()
     }
+    
+    
+    var seconds1 = 60
+    var timerTime = Timer()
+    var isTimerRunning = false
+    
+    func timeString(time:TimeInterval) -> String {
+        let hourstime = Int(time) / 3600
+        let minutestime = Int(time) / 60 % 60
+        let secondstime = Int(time) % 60
+        return String(format:"%02i:%02i:%02i", hourstime, minutestime, secondstime)
+    }
+    func runTimer() {
+        timerTime = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: true)
+    }
+    @objc func updateTimer() {
+        seconds1 -= 1     //This will decrement(count down)the seconds.
+        timeRemaining.text = "\(hours) hours and \(minuets) minutes"
+    }
+    
+    
+    
+    @objc func timeToMoveOn() {
+        print("Hello. Time is up!")
+        timer = 0
+    }
+
     
 //    var button = dropDownButton()
     
@@ -72,6 +105,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelega
         }
         
     }
+    
     
     
     @IBOutlet weak var queueNumber: UILabel!
