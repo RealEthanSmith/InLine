@@ -7,168 +7,158 @@
 //
 
 import UIKit
-import MapKit
-import CoreLocation
+//import MapKit
+//import CoreLocation
 
-class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate {
 
+class ViewController: UIViewController {
+
+    //when using maps, change to:
+    //class ViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate
+    
+    
+    //MARK: Variable Setup
     var YourQueuePosition = Double()
     var currentQueuePosition = Double()
-    let locationManager = CLLocationManager()
-    var timer = 1
-    var timeToDoIt = 1
+//    let locationManager = CLLocationManager()
+    var timeSetup1 = 1
+    var timeSetup2 = 2
+    var integer1 = Int(1)
+    var decimal1 = Int(1)
+    var timer = Timer()
+    var secondsForTimer = 1
+    var hours = Int(1)
+    var minuets = Int(1)
+    
+    
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        LocationUpdate()
+          //Show and Update Map
+//        LocationUpdate()
+//        mapView.showsUserLocation = true
+//        mapView.setUserTrackingMode(.follow, animated: true)
         
-        mapView.showsUserLocation = true
-        mapView.setUserTrackingMode(.follow, animated: true)
-        
-        queueNumber.text = String(YourQueuePosition)
-        currentQueue.text = String(currentQueuePosition)
+        //Setup On-Screen Text
+        queueNumber.text = "\(Int(YourQueuePosition))"
+        //currentQueue.text = "Now: \(Int(currentQueuePosition))"
         print (YourQueuePosition)
-//        button = dropDownButton.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-//        button.setTitle("Location", for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        self.view.addSubview(button)
-//        button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-//        button.widthAnchor.constraint(equalToConstant: 150).isActive = true
-//        button.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//        
+        
+        //Show On-Screen Text
         findQueueTime()
-        timeRemaining.text = "\(hours) hours and \(minuets) minutes"
+        secondsForTimer = (hours * 3600) + (minuets * 60)
+        timeRemaining.text = "\(hours) hours and \(minuets-1) minutes"
         
-        let timeer = hours * 3600
+        //Setup Timer
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.TimerActions), userInfo: nil, repeats: true)
+    }
+    
+    
+    
+    
+    
+    
+    
+    //MARK: Action for Timer
+    @objc func TimerActions(){
+        secondsForTimer -= 1
+        print (hours)
+        print (hours * 3600)
+        print ("hello \(Int(secondsForTimer))")
         
-//        Timer.scheduledTimer(timeInterval: timeer, target: self, selector: #selector(timeToMoveOn), userInfo: nil, repeats: false)
-        runTimer()
-    }
-    
-    
-    var seconds1 = 60
-    var timerTime = Timer()
-    var isTimerRunning = false
-    
-    func timeString(time:TimeInterval) -> String {
-        let hourstime = Int(time) / 3600
-        let minutestime = Int(time) / 60 % 60
-        let secondstime = Int(time) % 60
-        return String(format:"%02i:%02i:%02i", hourstime, minutestime, secondstime)
-    }
-    func runTimer() {
-        timerTime = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: true)
-    }
-    @objc func updateTimer() {
-        seconds1 -= 1     //This will decrement(count down)the seconds.
-        timeRemaining.text = "\(hours) hours and \(minuets) minutes"
-    }
-    
-    
-    
-    @objc func timeToMoveOn() {
-        print("Hello. Time is up!")
-        timer = 0
-    }
-
-    
-//    var button = dropDownButton()
-    
-    var timeSetup1 = 1
-    var timeSetup2 = 2
-    var hours = Double(1)
-    var minuets = Double(1)
-    var integer1 = Double(1)
-    var decimal1 = Double(1)
-    var seconds:Double = 1
-    
-    func LocationUpdate(){
-        self.locationManager.requestAlwaysAuthorization()
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
+     
+        let HoursForTimer = Int(secondsForTimer/3600)
+        let convertHoursToMinutes = HoursForTimer*60
+        let MinutesForTimer = Int((secondsForTimer/60)-convertHoursToMinutes)
         
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
+        if HoursForTimer < 1 && HoursForTimer > 0 || HoursForTimer == 1{
+            timeRemaining.text = "\(HoursForTimer) hour and \(MinutesForTimer) minutes"
+        } else if HoursForTimer == 0{
+            timeRemaining.text = "\(HoursForTimer) hours and \(MinutesForTimer) minutes"
+        }else {
+            timeRemaining.text = "\(HoursForTimer) hours and \(MinutesForTimer) minutes"
         }
         
-        mapView.delegate = self
-        mapView.mapType = .standard
-        mapView.isZoomEnabled = true
-        mapView.isScrollEnabled = true
-        
-        if let coor = mapView.userLocation.location?.coordinate{
-            mapView.setCenter(coor, animated: true)
+        //Checking for completed timer
+        if (secondsForTimer == 0){
+            timer.invalidate()
+            timeRemaining.text = "Your Up In Line!"
         }
-        
     }
     
     
     
-    @IBOutlet weak var queueNumber: UILabel!
-    @IBOutlet weak var timeRemaining: UILabel!
-    @IBOutlet weak var currentQueue: UILabel!
-    @IBOutlet weak var mapView: MKMapView!
-    
-    
+    //MARK: Setup Main Functions
+    //Calculate Queue Time
     func findQueueTime() {
+        
+        if queueNumber.text == nil{
+            YourQueuePosition = 1
+        }
+        if currentQueue.text == nil{
+            currentQueuePosition = 1
+        }
         
         let currentNumber:Double = Double(currentQueuePosition)
         let queue:Double = Double(YourQueuePosition)
         let queue2 = Int(queue-currentNumber)
-        print (queue2)
         timeSetup1 = Int(queue2 * 1)
-        print (timeSetup1)
         timeSetup2 = Int(timeSetup1 * 1)
         let totalTimeInHours = timeSetup2
-        print (totalTimeInHours)
-        let hoursPt1 = Double(totalTimeInHours/60)
-        print (hoursPt1)
-        hours = hoursPt1.rounded(.down)
-        print (hours)
-
-        minuets = Double(totalTimeInHours%60)
-        seconds = hours * 3600
+        
+        hours = Int(totalTimeInHours/60)
+        minuets = Int(totalTimeInHours%60)
+    
     }
-
+    
+    
+    
+    @IBAction func backPressed(_ sender: Any) {
+        timer.invalidate()
+    }
     
     
     
     
-//    class dropDownButton: UIButton {
-//        override init(frame: CGRect) {
-//            super.init(frame: frame)
-//
-//            self.backgroundColor = UIColor.darkGray
-//
-//        }
-//
-//        class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource {
-//            func numberOfSections(in tableView: UITableView) -> Int {
-//                return 1
-//            }
-//        }
-//
-//        required init?(coder aDecoder: NSCoder) {
-//            fatalError("init(coder:) has not been implemented")
-//        }
-//    }
+    //MARK: UI Setup
+    @IBOutlet weak var queueNumber: UILabel!
+    @IBOutlet weak var timeRemaining: UILabel!
+    @IBOutlet weak var currentQueue: UILabel!
+//    @IBOutlet weak var mapView: MKMapView!
     
+    //    //Setup the Maps
+    //    func LocationUpdate(){
+    //        self.locationManager.requestAlwaysAuthorization()
+    //        // For use in foreground
+    //        self.locationManager.requestWhenInUseAuthorization()
+    //
+    //        if CLLocationManager.locationServicesEnabled() {
+    //            locationManager.delegate = self
+    //            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    //            locationManager.startUpdatingLocation()
+    //        }
+    //
+    //        mapView.delegate = self
+    //        mapView.mapType = .standard
+    //        mapView.isZoomEnabled = true
+    //        mapView.isScrollEnabled = true
+    //
+    //        if let coor = mapView.userLocation.location?.coordinate{
+    //            mapView.setCenter(coor, animated: true)
+    //        }
+    //    }
     
 }
 
-public extension FloatingPoint {
-    public var whole: Self { return modf(self).0 }
-    public var fraction: Self { return modf(self).1 }
+//Universal Function
+func convertToSeconds(Hours: Int) -> Int{
+    let TotalSeconds = Hours * 3600
+    
+    return Int(TotalSeconds)
 }
-
-//origfinality
-//3 minuets
-//theme
-//elegence
-//completeness
-//presentation
-//potential for success; long term impact
