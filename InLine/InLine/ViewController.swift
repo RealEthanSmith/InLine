@@ -98,8 +98,8 @@ class ViewController: UIViewController {
     //Calculate Queue Time
     func findQueueTime() {
         
-        if queueNumber.text == nil{
-            YourQueuePosition = 1
+        if queueNumber.text == nil || queueNumber.text == "0"{
+            YourQueuePosition = 2
         }
         if currentQueue.text == nil{
             currentQueuePosition = 1
