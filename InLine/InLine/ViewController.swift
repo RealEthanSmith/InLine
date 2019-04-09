@@ -30,6 +30,9 @@ class ViewController: UIViewController {
     var hours = Int(1)
     var minuets = Int(1)
     
+    var NewCalcHours = Int(1)
+    var NewCalcMinutes = Int(1)
+    
     
     
     
@@ -51,9 +54,9 @@ class ViewController: UIViewController {
         print (YourQueuePosition)
         
         //Show On-Screen Text
-        findQueueTime()
-        secondsForTimer = (hours * 3600) + (minuets * 60)
-        timeRemaining.text = "\(hours) hours and \(minuets-1) minutes"
+        NEWfindQueueTime()
+        secondsForTimer = (NewCalcHours * 3600) + (NewCalcMinutes * 60)
+        timeRemaining.text = "\(NewCalcHours) hours and \(NewCalcMinutes-1) minutes"
         
         //Setup Timer
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.TimerActions), userInfo: nil, repeats: true)
@@ -68,8 +71,8 @@ class ViewController: UIViewController {
     //MARK: Action for Timer
     @objc func TimerActions(){
         secondsForTimer -= 1
-        print (hours)
-        print (hours * 3600)
+        print (NewCalcHours)
+        print (NewCalcHours * 3600)
         print ("hello \(Int(secondsForTimer))")
         
      
@@ -117,6 +120,26 @@ class ViewController: UIViewController {
     
     }
     
+    func NEWfindQueueTime() {
+        if queueNumber.text == nil || queueNumber.text == "0"{
+            YourQueuePosition = 2
+        }
+        if currentQueue.text == nil{
+            currentQueuePosition = 1
+        }
+        
+        let currentNumber:Double = Double(currentQueuePosition)
+        let queue:Double = Double(YourQueuePosition)
+        let queue2 = queue-currentNumber
+        let timeCalc = Int(queue2*17.5)
+        
+        NewCalcHours = Int(timeCalc/60)
+        NewCalcMinutes = Int(timeCalc)
+        
+    }
+    
+    
+    
     
     
     @IBAction func backPressed(_ sender: Any) {
@@ -154,11 +177,4 @@ class ViewController: UIViewController {
     //        }
     //    }
     
-}
-
-//Universal Function
-func convertToSeconds(Hours: Int) -> Int{
-    let TotalSeconds = Hours * 3600
-    
-    return Int(TotalSeconds)
 }
