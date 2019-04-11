@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        timer.invalidate()
           //Show and Update Map
 //        LocationUpdate()
 //        mapView.showsUserLocation = true
@@ -55,8 +55,8 @@ class ViewController: UIViewController {
         
         //Show On-Screen Text
         NEWfindQueueTime()
-        secondsForTimer = (NewCalcHours * 3600) + (NewCalcMinutes * 60)
-        timeRemaining.text = "\(NewCalcHours) hours and \(NewCalcMinutes-1) minutes"
+        secondsForTimer = (NewCalcMinutes * 60)
+        timeRemaining.text = "00 hours and 00 minutes"
         
         //Setup Timer
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.TimerActions), userInfo: nil, repeats: true)
@@ -71,22 +71,33 @@ class ViewController: UIViewController {
     //MARK: Action for Timer
     @objc func TimerActions(){
         secondsForTimer -= 1
-        print (NewCalcHours)
-        print (NewCalcHours * 3600)
-        print ("hello \(Int(secondsForTimer))")
+//        print ("Begin Hours: \(NewCalcHours)")
+//        print ("Hours: \(NewCalcHours * 3600)")
+        print ("Minutes: \(NewCalcMinutes * 60)")
+        print ("SFT: \(Int(secondsForTimer))")
         
      
-        let HoursForTimer = Int(secondsForTimer/3600)
-        let convertHoursToMinutes = HoursForTimer*60
-        let MinutesForTimer = Int((secondsForTimer/60)-convertHoursToMinutes)
+        let HoursForTimer = Double(secondsForTimer/3600)
+        var MinutesForTimer = Int(HoursForTimer.truncatingRemainder(dividingBy: 60))
         
-        if HoursForTimer < 1 && HoursForTimer > 0 || HoursForTimer == 1{
-            timeRemaining.text = "\(HoursForTimer) hour and \(MinutesForTimer) minutes"
-        } else if HoursForTimer == 0{
-            timeRemaining.text = "\(HoursForTimer) hours and \(MinutesForTimer) minutes"
-        }else {
-            timeRemaining.text = "\(HoursForTimer) hours and \(MinutesForTimer) minutes"
+        if HoursForTimer == 0{
+            MinutesForTimer = Int(NewCalcMinutes)
+            timeRemaining.text = "\(Int(HoursForTimer)) hour and \(MinutesForTimer) minutes"
+        } else if HoursForTimer > 0 {
+            MinutesForTimer = Int(HoursForTimer.truncatingRemainder(dividingBy: 60))
+            if HoursForTimer < 1 && HoursForTimer > 0 || HoursForTimer == 1{
+                timeRemaining.text = "\(Int(HoursForTimer)) hour and \(MinutesForTimer) minutes"
+            } else if HoursForTimer == 0{
+                timeRemaining.text = "\(Int(HoursForTimer)) hours and \(MinutesForTimer) minutes"
+            }else {
+                timeRemaining.text = "\(Int(HoursForTimer)) hours and \(MinutesForTimer) minutes"
+            }
         }
+        
+        
+        print ("HoursForTimer: \(HoursForTimer)")
+        print ("MinutesForTimer: \(MinutesForTimer)")
+        
         
         //Checking for completed timer
         if (secondsForTimer == 0){
