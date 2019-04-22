@@ -160,6 +160,7 @@
                         <outlet property="currentQueue" destination="NFt-tT-dtE" id="ktd-HE-jIU"/>
                         <outlet property="queueNumber" destination="vGe-Qt-8Nj" id="fgH-0H-VC6"/>
                         <outlet property="timeRemaining" destination="qkM-Yu-5qu" id="Y6m-Gg-6HF"/>
+                        <outlet property="tipsWithInLine" destination="uNs-MK-cgI" id="FNN-qb-JvP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Reg-cs-dvx" userLabel="First Responder" sceneMemberID="firstResponder"/>

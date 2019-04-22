@@ -33,11 +33,11 @@ class ViewController: UIViewController {
     
     var NewCalcHours = Int(1)
     var NewCalcMinutes = Int(1)
-    let averageTime_Double = Double(7)
-    let averageTime_Int = Int(7)
-
+    var averageTime_Int = Int(7)
+    var averageTime_Double = Double(7)
     var LocationApproved = UserDefaults.standard.set(0, forKey: "approved")
     
+    @IBOutlet weak var tipsWithInLine: UILabel!
     
     
     
@@ -46,11 +46,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        averageTime_Int = Int.random(in: 4...6)
+        averageTime_Double = Double(averageTime_Int)
+        
+        
         timer.invalidate()
-          //Show and Update Map
-//        LocationUpdate()
-//        mapView.showsUserLocation = true
-//        mapView.setUserTrackingMode(.follow, animated: true)
+        let tipNumber = Int.random(in: 1...3)
+        randomFactsWithInline(with: tipNumber)
         
         //Setup On-Screen Text
         queueNumber.text = "\(Int(YourQueuePosition))"
@@ -228,6 +231,18 @@ class ViewController: UIViewController {
         alertController.addAction(mapAction)
         self.present(alertController, animated: true, completion: nil)
         
+    }
+    
+    
+    
+    func randomFactsWithInline(with random: Int) {
+        if random == 1{
+            tipsWithInLine.text = "Tips with InLine:\n\n1. The time is only based on data points. It may vary up to 30 minutes\n\n2. Check with the front desk before leaving the building just to ensure you won't be late"
+        } else if random == 2{
+            tipsWithInLine.text = "Fun Fact:\n\nThe highest wait time in the dmv was recorded at over 4 hours!"
+        }else if random == 3{
+            tipsWithInLine.text = "Fun Fact:\n\nThe DMV was first created in California in 1915"
+        }
     }
     
     
