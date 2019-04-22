@@ -7,8 +7,9 @@
 //
 
 import UIKit
-//import MapKit
-//import CoreLocation
+import MapKit
+import CoreLocation
+import Foundation
 
 
 class ViewController: UIViewController {
@@ -20,7 +21,7 @@ class ViewController: UIViewController {
     //MARK: Variable Setup
     var YourQueuePosition = Double()
     var currentQueuePosition = Double()
-//    let locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     var timeSetup1 = 1
     var timeSetup2 = 2
     var integer1 = Int(1)
@@ -32,7 +33,10 @@ class ViewController: UIViewController {
     
     var NewCalcHours = Int(1)
     var NewCalcMinutes = Int(1)
-    
+    let averageTime_Double = Double(7)
+    let averageTime_Int = Int(7)
+
+    var LocationApproved = UserDefaults.standard.set(0, forKey: "approved")
     
     
     
@@ -56,7 +60,7 @@ class ViewController: UIViewController {
         //Show On-Screen Text
         NEWfindQueueTime()
         secondsForTimer = (NewCalcMinutes * 60)
-        timeRemaining.text = "00 hours and 00 minutes"
+        timeRemaining.text = "0 hours and 0 minutes"
         
         //Setup Timer
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.TimerActions), userInfo: nil, repeats: true)
@@ -74,21 +78,20 @@ class ViewController: UIViewController {
 //        print ("Begin Hours: \(NewCalcHours)")
 //        print ("Hours: \(NewCalcHours * 3600)")
         print ("Minutes: \(NewCalcMinutes * 60)")
-        print ("SFT: \(Int(secondsForTimer))")
+        print ("Seconds: \(Int(secondsForTimer))")
         
      
         let HoursForTimer = Double(secondsForTimer/3600)
         var MinutesForTimer = Int(HoursForTimer.truncatingRemainder(dividingBy: 60))
+        let MinutesForTimer_seconds = Int(secondsForTimer/60)
         
-        if HoursForTimer == 0{
-            MinutesForTimer = Int(NewCalcMinutes)
-            timeRemaining.text = "\(Int(HoursForTimer)) hour and \(MinutesForTimer) minutes"
+        if HoursForTimer == 0 || HoursForTimer < 0{
+            MinutesForTimer = MinutesForTimer_seconds
+            timeRemaining.text = "0 hours and \(MinutesForTimer) minutes"
         } else if HoursForTimer > 0 {
             MinutesForTimer = Int(HoursForTimer.truncatingRemainder(dividingBy: 60))
             if HoursForTimer < 1 && HoursForTimer > 0 || HoursForTimer == 1{
                 timeRemaining.text = "\(Int(HoursForTimer)) hour and \(MinutesForTimer) minutes"
-            } else if HoursForTimer == 0{
-                timeRemaining.text = "\(Int(HoursForTimer)) hours and \(MinutesForTimer) minutes"
             }else {
                 timeRemaining.text = "\(Int(HoursForTimer)) hours and \(MinutesForTimer) minutes"
             }
@@ -103,6 +106,7 @@ class ViewController: UIViewController {
         if (secondsForTimer == 0){
             timer.invalidate()
             timeRemaining.text = "Your Up In Line!"
+            timeUpNotification()
         }
     }
     
@@ -142,13 +146,25 @@ class ViewController: UIViewController {
         let currentNumber:Double = Double(currentQueuePosition)
         let queue:Double = Double(YourQueuePosition)
         let queue2 = queue-currentNumber
-        let timeCalc = Int(queue2*17.5)
+        let timeCalc = Int(queue2*averageTime_Double)
         
         NewCalcHours = Int(timeCalc/60)
         NewCalcMinutes = Int(timeCalc)
         
     }
     
+    
+    func timeUpNotification() {
+        
+        let alertController = UIAlertController(title: "Time's Up!", message: "According to our estimations, you should be up in line", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Ok", style: .cancel) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
     
     
     
@@ -157,6 +173,62 @@ class ViewController: UIViewController {
         timer.invalidate()
     }
     
+    @IBAction func showInMaps(_ sender: Any) {
+        let LocationApprovedNumber = UserDefaults.standard.integer(forKey: "approved")
+        getUsersLocation()
+        ReadyToMapAlert()
+    }
+    
+    
+    func getUsersLocation() {
+        // Ask for Authorisation from the User.
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self as CLLocationManagerDelegate
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func openInMaps() {
+        let latitude:CLLocationDegrees = (locationManager.location?.coordinate.latitude)!
+        let longitude:CLLocationDegrees =  (locationManager.location?.coordinate.longitude)!
+        
+        let regionDistance:CLLocationDistance = 5500
+        let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
+        let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = "Your location"
+        mapItem.openInMaps(launchOptions: options)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+    }
+    
+    
+    func ReadyToMapAlert(){
+        
+        let alertController = UIAlertController(title: "Approved for Mapping", message: "You have been authorized to view maps", preferredStyle: .alert)
+        let mapAction = UIAlertAction(title: "Map It", style: .default) { (action) in
+            self.dismiss(animated: true, completion: nil)
+            self.openInMaps()
+        }
+        
+        alertController.addAction(mapAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
     
     
     
@@ -164,8 +236,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var queueNumber: UILabel!
     @IBOutlet weak var timeRemaining: UILabel!
     @IBOutlet weak var currentQueue: UILabel!
-//    @IBOutlet weak var mapView: MKMapView!
     
+    
+    
+//    @IBOutlet weak var mapView: MKMapView!
     //    //Setup the Maps
     //    func LocationUpdate(){
     //        self.locationManager.requestAlwaysAuthorization()

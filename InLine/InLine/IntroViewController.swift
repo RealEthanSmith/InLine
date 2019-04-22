@@ -27,8 +27,16 @@ class IntroViewController: UIViewController {
 
     
     @IBAction func trackIt(_ sender: Any) {
-        YourQueuePosition = Double(YourPosition.text!)!
-        currentQueuePosition = Double(currentPosition.text!)!
+        if YourPosition.text == nil || YourPosition.text == "" {
+            YourQueuePosition = Double(1)
+        } else {
+            YourQueuePosition = Double(YourPosition.text!)!
+        }
+        if currentPosition.text == nil || currentPosition.text == "" {
+            currentQueuePosition = Double(1)
+        } else {
+            currentQueuePosition = Double(currentPosition.text!)!
+        }
         
         self.performSegue(withIdentifier: "goToMainView", sender: self)
     }
@@ -38,8 +46,16 @@ class IntroViewController: UIViewController {
         if (segue.identifier == "goToMainView") {
             
             let dest = segue.destination as! ViewController // viewTwo is your destination ViewController
-            dest.YourQueuePosition = Double(YourPosition.text!)!
-            dest.currentQueuePosition = Double(currentPosition.text!)!
+            if YourPosition.text == nil || YourPosition.text == "" {
+                dest.YourQueuePosition = Double(1)
+            } else {
+                dest.YourQueuePosition = Double(YourPosition.text!)!
+            }
+            if currentPosition.text == nil || currentPosition.text == "" {
+                dest.currentQueuePosition = Double(1)
+            } else {
+                dest.currentQueuePosition = Double(currentPosition.text!)!
+            }
             
             print("Segue Performed")
             
