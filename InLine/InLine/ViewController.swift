@@ -111,6 +111,11 @@ class ViewController: UIViewController {
             timeRemaining.text = "Your Up In Line!"
             timeUpNotification()
         }
+        if HoursForTimer == 0 && MinutesForTimer == 0{
+            timer.invalidate()
+            timeRemaining.text = "Your Up In Line!"
+            timeUpNotification()
+        }
     }
     
     
